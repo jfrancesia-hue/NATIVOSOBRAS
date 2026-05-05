@@ -1,6 +1,6 @@
 import { Bell, Mail, MessageCircle, Siren } from "lucide-react";
 import { getNotificaciones } from "@/lib/data";
-import { EmptyState } from "../components";
+import { EmptyState, PageHeader } from "../components";
 
 const iconByTipo = {
   whatsapp: MessageCircle,
@@ -13,12 +13,11 @@ export default async function NotificacionesPage() {
 
   return (
     <>
-      <section className="page-header">
-        <div>
-          <h1>Notificaciones</h1>
-          <p>Canales operativos para escalar alertas y pedir evidencia al territorio.</p>
-        </div>
-      </section>
+      <PageHeader
+        eyebrow="Centro de alertas"
+        title="Prioridades, impacto y accion recomendada"
+        description="Semaforo claro para escalar riesgos de obra, pedir evidencia y sostener decisiones tecnicas con trazabilidad."
+      />
       <section className="notification-grid">
         {notificaciones.length === 0 ? (
           <EmptyState title="Sin alertas para notificar" description="Las notificaciones operativas se generan desde alertas activas del tenant." />
@@ -31,7 +30,7 @@ export default async function NotificacionesPage() {
               <div>
                 <strong>{notificacion.titulo}</strong>
                 <p>{notificacion.detalle}</p>
-                <small>{notificacion.estado}</small>
+                <small>Causa: desvio operativo / Impacto: decision pendiente / Accion: {notificacion.estado}</small>
               </div>
             </article>
           );

@@ -1,7 +1,8 @@
 import { ArrowLeft, Bot, Camera, CheckCircle2, FileText, MapPinned, Plus, ShieldAlert, ShieldCheck } from "lucide-react";
 import { analyzeObra } from "@/lib/ai-engine";
+import { constructionImages } from "@/lib/constructionImages";
 import { getAlertas, getEvidencias, getObraById } from "@/lib/data";
-import { EmptyState, obraPinPosition } from "../../components";
+import { EmptyState, PageHeader, obraPinPosition } from "../../components";
 
 const money = new Intl.NumberFormat("es-AR", { style: "currency", currency: "ARS", maximumFractionDigits: 0 });
 
@@ -18,13 +19,13 @@ export default async function ObraDetallePage({ params }: { params: Promise<{ id
 
   return (
     <>
-      <section className="page-header">
-        <div>
-          <a className="text-link" href="/obras"><ArrowLeft size={16} /> Volver a obras</a>
-          <h1>{obra.nombre}</h1>
-          <p>{obra.organismo_responsable} / {obra.estado}</p>
-        </div>
-        <div className="header-actions">
+      <PageHeader
+        eyebrow="Detalle tecnico de obra"
+        title={obra.nombre}
+        description={`${obra.organismo_responsable} / ${obra.estado}`}
+        image={constructionImages.maquinariaVial}
+      >
+          <a className="ghost-button" href="/obras"><ArrowLeft size={16} /> Volver</a>
           <a className="ghost-button" href={`/obras/${obra.id}/avances/nuevo`}>
             <Plus size={18} />
             Cargar avance
@@ -33,8 +34,7 @@ export default async function ObraDetallePage({ params }: { params: Promise<{ id
             <FileText size={18} />
             Informe ejecutivo
           </a>
-        </div>
-      </section>
+      </PageHeader>
 
       <section className="detail-hero">
         <div className="detail-card accent-blue">

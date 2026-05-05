@@ -1,4 +1,4 @@
-import { Bell, Bot, Building2, ClipboardCheck, FileText, Gauge, Images, LogOut, ShieldCheck } from "lucide-react";
+import { Bell, Bot, Building2, ClipboardCheck, FileText, Gauge, HardHat, Images, LogOut, ShieldCheck } from "lucide-react";
 
 const nav = [
   { href: "/dashboard", label: "Tablero", icon: Gauge },
@@ -16,17 +16,17 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
     <>
       <aside className="sidebar">
         <div className="brand">
-          <span className="brand-mark">N</span>
+          <span className="brand-mark"><HardHat size={20} /></span>
           <div>
-            <strong>Nativos</strong>
-            <small>Obras360</small>
+            <strong>Nativos Obras360</strong>
+            <small>Control de infraestructura</small>
           </div>
         </div>
         <div className="sidebar-command">
-          <span className="sidebar-tool helmet-tool" />
+          <span className="sidebar-tool"><Building2 size={20} /></span>
           <div>
-            <strong>Centro de obra</strong>
-            <small>GPS / evidencia / presupuesto</small>
+            <strong>Obra bajo control</strong>
+            <small>Avance / presupuesto / auditoria</small>
           </div>
         </div>
         <nav>

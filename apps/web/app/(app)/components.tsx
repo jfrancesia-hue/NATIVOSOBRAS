@@ -7,13 +7,52 @@ export function EmptyState({ title, description }: { title: string; description:
   );
 }
 
-export function KpiCard({ label, value }: { label: string; value: string | number }) {
+export function KpiCard({ label, value, icon, tone = "default" }: { label: string; value: string | number; icon?: any; tone?: "default" | "warning" | "success" | "blue" }) {
   return (
-    <div className="card">
-      <span className="kpi-tool" />
+    <div className={`card metric-card tone-${tone}`}>
+      <span className="kpi-tool">{icon}</span>
       <div className="label">{label}</div>
       <div className="metric">{value}</div>
     </div>
+  );
+}
+
+export function RiskBadge({ value }: { value: string }) {
+  return (
+    <span className={`risk-badge ${value}`}>
+      <span className={`dot ${value}`} />
+      {value}
+    </span>
+  );
+}
+
+export function StatusBadge({ value }: { value: string }) {
+  const normalized = value.replace("_", " ");
+  return <span className={`status-badge ${value}`}>{normalized}</span>;
+}
+
+export function PageHeader({
+  eyebrow,
+  title,
+  description,
+  image,
+  children
+}: {
+  eyebrow?: string;
+  title: string;
+  description: string;
+  image?: string;
+  children?: any;
+}) {
+  return (
+    <section className={image ? "page-hero construction-hero" : "page-header premium-page-header"} style={image ? { backgroundImage: `linear-gradient(90deg, rgba(15, 36, 55, 0.86), rgba(15, 36, 55, 0.34)), url(${image})` } : undefined}>
+      <div>
+        {eyebrow ? <span className="eyebrow">{eyebrow}</span> : null}
+        <h1>{title}</h1>
+        <p>{description}</p>
+      </div>
+      {children ? <div className="header-actions">{children}</div> : null}
+    </section>
   );
 }
 

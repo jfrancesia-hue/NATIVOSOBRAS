@@ -1,20 +1,19 @@
 import { Bot, ShieldAlert } from "lucide-react";
 import { analyzeProveedor } from "@/lib/ai-engine";
 import { getProveedores } from "@/lib/data";
-import { EmptyState } from "../components";
+import { EmptyState, PageHeader } from "../components";
 
 export default async function ProveedoresPage() {
   const proveedores = await getProveedores();
 
   return (
     <>
-      <section className="page-header">
-        <div>
-          <h1>Proveedores y licitaciones</h1>
-          <p>Registro de empresas, desempeno historico y comparacion automatica de ofertas.</p>
-        </div>
-      </section>
-      <section className="panel">
+      <PageHeader
+        eyebrow="Registro empresarial"
+        title="Proveedores, cumplimiento y riesgo operativo"
+        description="Seguimiento de desempeno historico, desviaciones, documentacion y senales tempranas para adjudicaciones mas seguras."
+      />
+      <section className="panel provider-panel">
         {proveedores.length === 0 ? <EmptyState title="Sin proveedores" description="Carga proveedores para comparar desempeno y ofertas." /> : null}
         {proveedores.length > 0 ? (
           <div className="provider-grid">

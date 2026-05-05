@@ -1,7 +1,8 @@
 import { Bot, Camera, ClipboardCheck, FileText, MapPinned, PauseCircle, ShieldAlert, Sparkles, TrendingUp } from "lucide-react";
 import { analyzeEvidence, analyzePortfolio, generateExecutiveReport } from "@/lib/ai-engine";
+import { constructionImages } from "@/lib/constructionImages";
 import { getAlertas, getEvidencias, getObras, getProveedores } from "@/lib/data";
-import { EmptyState } from "../components";
+import { EmptyState, PageHeader } from "../components";
 
 const money = new Intl.NumberFormat("es-AR", { style: "currency", currency: "ARS", maximumFractionDigits: 0 });
 
@@ -13,21 +14,21 @@ export default async function IaPage() {
 
   return (
     <>
-      <section className="page-header ai-page-header">
-        <div>
-          <span className="eyebrow">Centro IA</span>
-          <h1>Decisiones automaticas para obra publica y privada</h1>
-          <p>La plataforma prioriza riesgos, recomienda acciones, controla certificados, analiza evidencia y arma informes ejecutivos.</p>
-        </div>
+      <PageHeader
+        eyebrow="Copiloto tecnico de obra"
+        title="IA aplicada a certificaciones, inspecciones y riesgo operativo"
+        description="Priorizacion de obras, riesgo de sobrecostos, atraso fisico, certificaciones a revisar y proveedores observados."
+        image={constructionImages.planosObra}
+      >
         <a className="button" href="/informe">
           <FileText size={18} />
           Ver informe
         </a>
-      </section>
+      </PageHeader>
 
       <section className="ai-command-room">
         <div className="ai-command-copy">
-          <span><Bot size={18} /> Copiloto operativo</span>
+          <span><Bot size={18} /> Copiloto operativo de obra</span>
           <h2>{portfolio.priority ? portfolio.priority.obraNombre : "Sin prioridad generada"}</h2>
           <p>{portfolio.executiveBrief}</p>
           <div className="ai-command-actions">

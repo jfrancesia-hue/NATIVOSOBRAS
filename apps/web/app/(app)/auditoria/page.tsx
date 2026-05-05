@@ -1,40 +1,37 @@
+import { Clock, Database, UserRound } from "lucide-react";
 import { getAuditEvents } from "@/lib/data";
-import { EmptyState } from "../components";
+import { EmptyState, PageHeader } from "../components";
 
 export default async function AuditoriaPage() {
   const eventos = await getAuditEvents();
 
   return (
     <>
-      <section className="page-header">
-        <div>
-          <h1>Auditoria total</h1>
-          <p>Trazabilidad de eventos criticos: quien hizo que, cuando y sobre que entidad.</p>
-        </div>
+      <PageHeader
+        eyebrow="Trazabilidad institucional"
+        title="Auditoria clara para decisiones y control posterior"
+        description="Registro ordenado por usuario, obra, fecha y evento para reconstruir cada decision relevante."
+      />
+      <section className="audit-filter-bar">
+        {["Usuario", "Obra", "Fecha", "Evento"].map((filter) => (
+          <button type="button" key={filter}>{filter}</button>
+        ))}
       </section>
-      <section className="panel">
+      <section className="panel audit-panel">
         {eventos.length === 0 ? <EmptyState title="Sin eventos de auditoria" description="Las altas y cambios sobre obras, avances y proveedores se registraran aca." /> : null}
         {eventos.length > 0 ? (
-        <table className="table">
-          <thead>
-            <tr>
-              <th>Accion</th>
-              <th>Entidad</th>
-              <th>Actor</th>
-              <th>Fecha</th>
-            </tr>
-          </thead>
-          <tbody>
+          <div className="audit-timeline">
             {eventos.map((evento) => (
-              <tr key={evento.id}>
-                <td>{evento.action}</td>
-                <td>{evento.entity}</td>
-                <td>{evento.actor_id ?? "sistema"}</td>
-                <td>{new Date(evento.created_at).toLocaleString("es-AR")}</td>
-              </tr>
+              <article key={evento.id}>
+                <span className="audit-dot"><Database size={18} /></span>
+                <div>
+                  <strong>{evento.action}</strong>
+                  <p>{evento.entity}</p>
+                  <small><UserRound size={14} /> {evento.actor_id ?? "sistema"} <Clock size={14} /> {new Date(evento.created_at).toLocaleString("es-AR")}</small>
+                </div>
+              </article>
             ))}
-          </tbody>
-        </table>
+          </div>
         ) : null}
       </section>
     </>

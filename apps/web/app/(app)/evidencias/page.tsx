@@ -1,19 +1,20 @@
 import { Bot, Camera, ScanSearch } from "lucide-react";
+import { constructionImages } from "@/lib/constructionImages";
 import { analyzeEvidence } from "@/lib/ai-engine";
 import { getEvidencias } from "@/lib/data";
-import { EmptyState } from "../components";
+import { EmptyState, PageHeader } from "../components";
 
 export default async function EvidenciasPage() {
   const evidencias = await getEvidencias();
 
   return (
     <>
-      <section className="page-header">
-        <div>
-          <h1>Galeria de evidencias</h1>
-          <p>Fotos de avance con inspector, fecha, porcentaje y ubicacion.</p>
-        </div>
-      </section>
+      <PageHeader
+        eyebrow="Auditoria fotografica"
+        title="Evidencias de campo con trazabilidad tecnica"
+        description="Fotos, fecha, inspector, validacion GPS y lectura asistida para sostener avance fisico y certificaciones."
+        image={constructionImages.inspectorCampo}
+      />
       <section className="evidence-grid">
         {evidencias.length === 0 ? (
           <EmptyState title="Sin evidencias cargadas" description="Cuando los inspectores registren avances, las fotos con GPS apareceran aca." />

@@ -1,6 +1,7 @@
 import { FileText } from "lucide-react";
 import { analyzePortfolio, generateExecutiveReport } from "@/lib/ai-engine";
 import { getAlertas, getEvidencias, getObras, getProveedores } from "@/lib/data";
+import { PageHeader } from "../components";
 import { PrintButton } from "./print-button";
 
 const money = new Intl.NumberFormat("es-AR", { style: "currency", currency: "ARS", maximumFractionDigits: 0 });
@@ -14,13 +15,13 @@ export default async function InformePage() {
 
   return (
     <>
-      <section className="page-header no-print">
-        <div>
-          <h1>Informe ejecutivo</h1>
-          <p>Resumen listo para imprimir o exportar como PDF desde el navegador.</p>
-        </div>
+      <PageHeader
+        eyebrow="Informe ejecutivo"
+        title="Documento listo para ministro, intendente o comite tecnico"
+        description="Resumen de obras criticas, ahorro estimado, certificaciones observadas y proveedores en riesgo."
+      >
         <PrintButton />
-      </section>
+      </PageHeader>
       <section className="report-page">
         <div className="report-header">
           <FileText size={30} />
