@@ -1,309 +1,169 @@
-import { ArrowRight, BarChart3, Bot, BrainCircuit, CheckCircle2, FileText, HardHat, MapPinned, PauseCircle, ScanSearch, ShieldAlert, Sparkles, Smartphone, TrendingUp } from "lucide-react";
+import { ArrowRight, Banknote, Bot, Building2, Camera, CheckCircle2, ClipboardCheck, FileText, HardHat, MapPinned, PauseCircle, ScanSearch, ShieldAlert, TrendingUp } from "lucide-react";
+import { constructionImages } from "@/lib/constructionImages";
 import { RoiCalculator } from "./roi-calculator";
 
 const metrics = [
-  { value: "IA", label: "prioriza obras con riesgo real antes de la crisis" },
-  { value: "24/7", label: "copiloto ejecutivo para decisiones y auditoria" },
-  { value: "GPS", label: "evidencia territorial validada automaticamente" }
+  { value: "18", label: "obras activas monitoreadas" },
+  { value: "$2.9B", label: "presupuesto bajo control" },
+  { value: "6", label: "certificaciones observadas" },
+  { value: "24/7", label: "trazabilidad tecnica y documental" }
 ];
 
-const modules = [
-  { kind: "brain", title: "Prediccion de desvios", text: "La IA cruza avance fisico, pagos, plazos y evidencia para anticipar riesgo presupuestario." },
-  { kind: "scan", title: "Lectura de evidencia", text: "Fotos, GPS y comentarios se convierten en senales: avance probable, faltantes y anomalias." },
-  { kind: "bot", title: "Copiloto ejecutivo", text: "El sistema sugiere acciones: pedir evidencia, pausar pagos, escalar auditoria o visitar obra." }
+const platformPillars = [
+  { icon: Building2, title: "Seguimiento de obra", text: "Avance fisico, financiero, ubicacion y estado operativo en una vista clara." },
+  { icon: Camera, title: "Evidencia verificable", text: "Fotos de campo, inspector, fecha, GPS y validacion para sostener cada certificacion." },
+  { icon: Bot, title: "Copiloto tecnico", text: "Priorizacion de riesgos, obras sin inspeccion reciente y acciones recomendadas." },
+  { icon: FileText, title: "Informe ejecutivo", text: "Resumen listo para autoridades, auditoria, comite tecnico o direccion de obra." }
 ];
 
-const aiUseCases = [
-  { icon: BrainCircuit, title: "Semaforo predictivo", text: "No espera a que alguien revise una planilla: detecta patrones de atraso y sobre-ejecucion." },
-  { icon: ScanSearch, title: "Auditoria asistida", text: "Resume evidencia, contratos y cambios para que un auditor entienda el caso en minutos." },
-  { icon: TrendingUp, title: "Riesgo financiero", text: "Marca obras donde el dinero avanza mas rapido que el progreso fisico reportado." },
-  { icon: Bot, title: "Proxima mejor accion", text: "Recomienda que hacer hoy: pedir foto, enviar inspector, bloquear certificado o informar autoridad." }
-];
-
-const immediateSolutions = [
-  { icon: PauseCircle, title: "Pausar pagos con riesgo", text: "La IA propone frenar certificados cuando el avance financiero supera la evidencia fisica." },
-  { icon: MapPinned, title: "Mandar inspector donde importa", text: "Prioriza recorridos segun riesgo, ausencia de fotos, distancia GPS y criticidad politica o contractual." },
-  { icon: ShieldAlert, title: "Detectar proveedor problematico", text: "Cruza cumplimiento, reclamos, atrasos, desvio promedio y obras simultaneas." },
-  { icon: FileText, title: "Generar informe listo", text: "Arma un resumen ejecutivo con evidencia, decisiones sugeridas y respaldo para auditoria." }
+const useCases = [
+  { icon: PauseCircle, title: "Riesgo de sobrecertificacion", text: "Detecta cuando el avance financiero supera al avance fisico informado." },
+  { icon: MapPinned, title: "Inspecciones priorizadas", text: "Ordena visitas por criticidad, evidencia pendiente, distancia y plazo contractual." },
+  { icon: ShieldAlert, title: "Proveedor observado", text: "Cruza cumplimiento, desvios recurrentes y desempeno historico de empresas." },
+  { icon: ScanSearch, title: "Auditoria asistida", text: "Convierte fotos, alertas y eventos en una lectura tecnica accionable." }
 ];
 
 export default function LandingPage() {
   return (
-    <main className="landing">
-      <section className="hero">
-        <header className="landing-nav">
-          <a className="landing-brand" href="/">
-            <span className="brand-mark">N</span>
-            <span>Nativos Obras360</span>
+    <main className="public-site">
+      <section className="public-hero" style={{ backgroundImage: `linear-gradient(90deg, rgba(15, 36, 55, 0.9), rgba(15, 36, 55, 0.42)), url(${constructionImages.heroObraPublica})` }}>
+        <header className="public-nav">
+          <a className="public-brand" href="/">
+            <span><HardHat size={20} /></span>
+            <strong>Nativos Obras360</strong>
           </a>
-          <div className="landing-actions">
+          <nav>
+            <a href="#plataforma">Plataforma</a>
+            <a href="#ia">IA tecnica</a>
+            <a href="#calculadora">ROI</a>
+          </nav>
+          <div className="public-actions">
             <a href="/login">Ingresar</a>
-            <a className="button" href="/dashboard">
-              Abrir plataforma
-              <ArrowRight size={18} />
-            </a>
+            <a className="button" href="/dashboard">Abrir plataforma <ArrowRight size={18} /></a>
           </div>
         </header>
 
-        <div className="hero-content">
-          <div className="hero-copy">
-            <span className="eyebrow industrial">IA para obra publica / riesgo / evidencia / presupuesto</span>
-            <h1>Que obra necesita atencion hoy?</h1>
+        <div className="public-hero-content">
+          <div>
+            <span className="eyebrow">GovTech + construccion + auditoria</span>
+            <h1>Control inteligente de obras publicas y privadas</h1>
             <p>
-              Nativos Obras360 no es otro tablero para ordenar datos: es una capa de inteligencia que detecta
-              desvios, interpreta evidencia y recomienda decisiones antes de que una obra se transforme en problema.
+              Seguimiento fisico, financiero y documental para que cada peso invertido se traduzca en avance real,
+              con evidencia de campo, alertas claras e informes ejecutivos.
             </p>
-            <div className="toolbelt" aria-label="Herramientas principales">
-              <span><BrainCircuit size={18} /> IA predictiva</span>
-              <span><ScanSearch size={18} /> Evidencia inteligente</span>
-              <span><Sparkles size={18} /> Accion recomendada</span>
-            </div>
-            <div className="hero-cta">
-              <a className="button hero-button" href="/login">
-                Ingresar al sistema
-                <ArrowRight size={18} />
-              </a>
-              <a className="ghost-button" href="#calculadora">Calcular ahorro</a>
+            <div className="public-hero-actions">
+              <a className="button" href="/login">Ingresar al sistema <ArrowRight size={18} /></a>
+              <a className="ghost-button" href="/informe">Generar informe</a>
             </div>
           </div>
 
-          <div className="hero-visual" aria-label="Vista previa del sistema">
-            <div className="real-photo-card">
-              <div className="photo-credit">Obra vial fiscalizada</div>
-              <div className="floating-chip chip-camera">
-                <span className="custom-icon mini camera-icon"><span /></span>
-                Foto + GPS
-              </div>
-              <div className="floating-chip chip-alert">
-                <span className="custom-icon mini alert-icon"><span /></span>
-                Riesgo detectado
+          <aside className="public-control-card">
+            <div className="public-card-top">
+              <span>Obra observada</span>
+              <strong>Hospital Modular Norte</strong>
+            </div>
+            <div className="public-progress-pair">
+              <label>Avance fisico <b>41%</b></label>
+              <div><span style={{ width: "41%" }} /></div>
+              <label>Avance financiero <b>70%</b></label>
+              <div><span className="financial" style={{ width: "70%" }} /></div>
+            </div>
+            <div className="public-recommendation">
+              <ShieldAlert size={20} />
+              <div>
+                <strong>Accion recomendada</strong>
+                <p>Revisar certificacion, pedir evidencia GPS y enviar inspector.</p>
               </div>
             </div>
-
-            <div className="command-center">
-              <div className="command-top">
-                <div>
-                  <strong>Centro de control</strong>
-                  <small>Operacion provincial</small>
-                </div>
-                <span className="live-pill"><HardHat size={14} /> en obra</span>
-              </div>
-              <div className="command-map">
-                <span className="route route-a" />
-                <span className="route route-b" />
-                <span className="map-node node-red" />
-                <span className="map-node node-green" />
-                <span className="map-node node-yellow" />
-                <div className="map-callout">
-                  <MapPinned size={16} />
-                  IA detecto riesgo
-                  <strong>Pago 70% / avance 41%</strong>
-                </div>
-              </div>
-              <div className="command-grid">
-                <div>
-                  <span>Riesgo IA</span>
-                  <strong>92%</strong>
-                </div>
-                <div>
-                  <span>Accion</span>
-                  <strong>Auditar</strong>
-                </div>
-                <div>
-                  <span>Ahorro estimado</span>
-                  <strong className="rojo">$84M</strong>
-                </div>
-              </div>
-            </div>
-          </div>
+          </aside>
         </div>
       </section>
 
-      <section className="landing-metrics">
+      <section className="public-metrics">
         {metrics.map((metric) => (
-          <div key={metric.label}>
+          <article key={metric.label}>
             <strong>{metric.value}</strong>
             <span>{metric.label}</span>
-          </div>
+          </article>
         ))}
       </section>
 
-      <section className="construction-strip" aria-label="Obras reales monitoreadas">
-        <article>
-          <span>Vialidad</span>
-          <strong>Seguimiento de rutas, puentes y pavimento</strong>
-        </article>
-        <article>
-          <span>Infraestructura urbana</span>
-          <strong>Redes, hospitales, escuelas y saneamiento</strong>
-        </article>
-        <article>
-          <span>Auditoria territorial</span>
-          <strong>Foto, GPS, avance y contrato en una vista</strong>
-        </article>
-      </section>
-
-      <section className="ai-command-band">
-        <div className="section-heading">
-          <span className="eyebrow">Diferencial real</span>
-          <h2>La IA convierte una pila de datos de obra en decisiones concretas</h2>
-          <p>El cliente no compra otro Excel: compra menos sorpresa, menos recorrido innecesario y mas control sobre certificados, evidencia y plazos.</p>
+      <section className="public-section public-split" id="plataforma">
+        <div>
+          <span className="eyebrow">Plataforma operativa</span>
+          <h2>Una vista seria para ministerios, municipios y constructoras</h2>
+          <p>
+            Nativos Obras360 ordena el trabajo de inspeccion, auditoria y control presupuestario sin convertir
+            la gestion en una planilla mas.
+          </p>
+          <div className="public-checks">
+            <span><CheckCircle2 size={17} /> Avance fisico vs financiero</span>
+            <span><CheckCircle2 size={17} /> Evidencia fotografica validada</span>
+            <span><CheckCircle2 size={17} /> Alertas por riesgo operativo</span>
+          </div>
         </div>
-        <div className="ai-command-layout">
-          <div className="ai-photo-panel">
-            <span>Analisis en campo</span>
-            <strong>La foto, el GPS y el contrato hablan entre si.</strong>
-          </div>
-          <div className="ai-cards">
-            {aiUseCases.map((item) => {
-              const Icon = item.icon;
-              return (
-                <article key={item.title}>
-                  <Icon size={24} />
-                  <h3>{item.title}</h3>
-                  <p>{item.text}</p>
-                </article>
-              );
-            })}
-          </div>
+        <div className="public-photo-stack">
+          <img src={constructionImages.inspectorCampo} alt="Inspector tecnico revisando una obra" />
+          <article>
+            <MapPinned size={22} />
+            <strong>Inspeccion en campo</strong>
+            <span>Foto, GPS, fecha y avance informado.</span>
+          </article>
         </div>
       </section>
 
-      <section className="immediate-solutions-band">
-        <div className="section-heading">
-          <span className="eyebrow">Soluciones que duelen hoy</span>
-          <h2>Funciones para que el cliente diga: esto lo necesito esta semana</h2>
-          <p>Obra publica y privada necesitan decidir rapido: pagar, frenar, visitar, intimar, justificar o informar.</p>
+      <section className="public-section">
+        <div className="public-section-head">
+          <span className="eyebrow">Componentes clave</span>
+          <h2>Construccion real, datos claros y decisiones accionables</h2>
         </div>
-        <div className="immediate-grid">
-          {immediateSolutions.map((solution) => {
-            const Icon = solution.icon;
+        <div className="public-pillar-grid">
+          {platformPillars.map((pillar) => {
+            const Icon = pillar.icon;
             return (
-              <article key={solution.title}>
-                <Icon size={28} />
-                <h3>{solution.title}</h3>
-                <p>{solution.text}</p>
+              <article key={pillar.title}>
+                <Icon size={24} />
+                <h3>{pillar.title}</h3>
+                <p>{pillar.text}</p>
               </article>
             );
           })}
         </div>
       </section>
 
-      <section className="client-problem-band">
-        <div className="section-heading">
-          <span className="eyebrow">Lo que resuelve</span>
-          <h2>El problema no es organizar obras: es saber donde actuar primero</h2>
-          <p>Obras360 transforma fotos, GPS, presupuesto, contratos y auditoria en alertas explicadas por IA.</p>
+      <section className="public-section public-ia-band" id="ia">
+        <div className="public-section-head">
+          <span className="eyebrow">IA tecnica, no ciencia ficcion</span>
+          <h2>Un copiloto operativo para saber que revisar hoy</h2>
+          <p>La IA prioriza obras, certificaciones, proveedores y evidencias con lenguaje tecnico entendible.</p>
         </div>
-        <div className="client-cards">
-          <article>
-            <span className="client-icon orange"><i className="tool-icon crane-tool" /></span>
-            <h3>Gestion politica aumentada</h3>
-            <p>Ministros e intendentes reciben prioridades explicadas: impacto, evidencia y accion sugerida.</p>
-          </article>
-          <article>
-            <span className="client-icon cyan"><i className="tool-icon shovel-tool" /></span>
-            <h3>Territorio inteligente</h3>
-            <p>La app de campo no solo carga: valida ubicacion, evidencia minima y senales de avance.</p>
-          </article>
-          <article>
-            <span className="client-icon blue"><i className="tool-icon blueprint-tool" /></span>
-            <h3>Auditoria asistida</h3>
-            <p>La IA arma una lectura del caso con eventos, evidencia, pagos y desvio probable.</p>
-          </article>
-        </div>
-      </section>
-
-      <section className="product-band" id="sistema">
-        <div className="section-heading">
-          <span className="eyebrow">Operacion inteligente</span>
-          <h2>Del territorio al despacho, con IA mirando los desvios</h2>
-          <p>Inspectores cargan evidencia; la IA prioriza riesgos y recomienda la siguiente accion.</p>
-        </div>
-
-        <div className="product-layout">
-          <div className="dashboard-shot">
-            <div className="shot-header">
-              <span />
-              <span />
-              <span />
-            </div>
-            <div className="shot-kpis">
-              <div><strong>18</strong><small>obras activas</small></div>
-              <div><strong>47%</strong><small>avance promedio</small></div>
-              <div><strong>$1.640M</strong><small>ejecutado</small></div>
-            </div>
-            <div className="risk-board">
-              <div className="risk-card high">
-                <span>Hospital Modular Norte</span>
-                <strong>IA: 92% riesgo de sobre-ejecucion</strong>
-                <small>Accion: auditar certificado</small>
-              </div>
-              <div className="risk-card mid">
-                <span>Red Cloacal Este</span>
-                <strong>IA: evidencia insuficiente</strong>
-                <small>Accion: pedir foto + visita</small>
-              </div>
-              <div className="risk-card ok">
-                <span>Ruta Provincial 18</span>
-                <strong>IA: avance consistente</strong>
-                <small>Accion: mantener frecuencia</small>
-              </div>
-            </div>
-          </div>
-
-          <div className="mobile-shot">
-            <div className="mobile-top">
-              <Smartphone size={18} />
-              Inspector
-            </div>
-            <div className="mobile-card">
-              <strong>Cargar avance</strong>
-              <span>Foto interpretada por IA</span>
-              <span>GPS dentro del radio</span>
-              <span>Alerta si falta evidencia</span>
-            </div>
-            <button type="button">Guardar evidencia</button>
-          </div>
+        <div className="public-use-grid">
+          {useCases.map((item) => {
+            const Icon = item.icon;
+            return (
+              <article key={item.title}>
+                <Icon size={25} />
+                <h3>{item.title}</h3>
+                <p>{item.text}</p>
+              </article>
+            );
+          })}
         </div>
       </section>
 
       <RoiCalculator />
 
-      <section className="module-band">
-        {modules.map((module) => {
-          return (
-            <article key={module.title} className="module-item">
-              <span className={`custom-icon ${module.kind}-icon`}><span /></span>
-              <h3>{module.title}</h3>
-              <p>{module.text}</p>
-            </article>
-          );
-        })}
-      </section>
-
-      <section className="sales-flow-band">
-        <div className="section-heading">
-          <span className="eyebrow">Adopcion operativa</span>
-          <h2>Un flujo de trabajo que el equipo entiende en cinco minutos</h2>
-        </div>
-        <div className="sales-flow">
-          <div><BarChart3 size={24} /><strong>1. Tablero</strong><span>KPIs, mapa y criticidad.</span></div>
-          <div><MapPinned size={24} /><strong>2. Detalle de obra</strong><span>Avance, presupuesto y alertas.</span></div>
-          <div><Smartphone size={24} /><strong>3. Evidencia mobile</strong><span>Foto + GPS + timestamp.</span></div>
-          <div><FileText size={24} /><strong>4. Informe PDF</strong><span>Resumen ejecutivo imprimible.</span></div>
-        </div>
-      </section>
-
-      <section className="closing-band">
+      <section className="public-section public-report-preview">
         <div>
-          <CheckCircle2 size={28} />
-          <h2>Control presupuestario, transparencia y decision rapida en una sola plataforma.</h2>
+          <span className="eyebrow">Informe ejecutivo</span>
+          <h2>Listo para ministro, intendente, auditoria o direccion de obra</h2>
+          <p>Resumen de obras criticas, ahorro estimado, certificaciones observadas y proveedores en riesgo.</p>
         </div>
-        <a className="button" href="/login">
-          Ingresar al sistema
-          <ArrowRight size={18} />
-        </a>
+        <article>
+          <div><Banknote size={20} /><strong>Ahorro estimado</strong><span>$84M</span></div>
+          <div><TrendingUp size={20} /><strong>Brecha fisico-financiera</strong><span>+29%</span></div>
+          <div><ClipboardCheck size={20} /><strong>Decision</strong><span>Auditar certificado</span></div>
+        </article>
       </section>
     </main>
   );

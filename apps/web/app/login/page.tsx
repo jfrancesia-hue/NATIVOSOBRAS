@@ -1,23 +1,24 @@
-import { Activity, Camera, MapPinned, ShieldCheck } from "lucide-react";
+import { Activity, Building2, Camera, HardHat, MapPinned, ShieldCheck } from "lucide-react";
+import { constructionImages } from "@/lib/constructionImages";
 import { LoginForm } from "./login-form";
 
 export default function LoginPage() {
   return (
     <main className="auth-main">
       <section className="auth-shell">
-        <div className="auth-visual">
+        <div className="auth-visual" style={{ backgroundImage: `linear-gradient(180deg, rgba(15, 36, 55, 0.26), rgba(15, 36, 55, 0.88)), url(${constructionImages.planosObra})` }}>
           <a className="auth-brand" href="/">
-            <span className="brand-mark">N</span>
+            <span className="brand-mark"><HardHat size={20} /></span>
             <span>Nativos Obras360</span>
           </a>
           <div className="auth-visual-copy">
             <span className="eyebrow">Acceso institucional</span>
-            <h1>Control de obra publica con evidencia, alertas y auditoria.</h1>
-            <p>Un ingreso seguro para equipos que necesitan ver avance fisico, ejecucion financiera y riesgos en tiempo real.</p>
+            <h1>Gestion tecnica de obras con evidencia y control presupuestario.</h1>
+            <p>Ingreso seguro para equipos de infraestructura, municipios, auditorias y constructoras.</p>
           </div>
           <div className="auth-insight-card">
             <div>
-              <span>Riesgo operativo</span>
+              <span>Riesgo de sobrecertificacion</span>
               <strong>+29%</strong>
             </div>
             <div className="auth-mini-bars">
@@ -27,9 +28,10 @@ export default function LoginPage() {
             <small>Hospital Modular Norte / evidencia requerida</small>
           </div>
           <div className="auth-feature-row">
+            <span><Building2 size={18} /> Obras</span>
             <span><Camera size={18} /> Foto + GPS</span>
             <span><MapPinned size={18} /> Geocerca</span>
-            <span><ShieldCheck size={18} /> RLS activo</span>
+            <span><ShieldCheck size={18} /> Auditoria</span>
           </div>
         </div>
 
