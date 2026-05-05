@@ -10,6 +10,7 @@ export function EmptyState({ title, description }: { title: string; description:
 export function KpiCard({ label, value }: { label: string; value: string | number }) {
   return (
     <div className="card">
+      <span className="kpi-tool" />
       <div className="label">{label}</div>
       <div className="metric">{value}</div>
     </div>

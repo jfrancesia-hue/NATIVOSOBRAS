@@ -21,6 +21,13 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
             <small>Obras360</small>
           </div>
         </div>
+        <div className="sidebar-command">
+          <span className="sidebar-tool helmet-tool" />
+          <div>
+            <strong>Centro de obra</strong>
+            <small>GPS / evidencia / presupuesto</small>
+          </div>
+        </div>
         <nav>
           {nav.map((item) => {
             const Icon = item.icon;
@@ -37,7 +44,7 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
           Salir
         </a>
       </aside>
-      <main>{children}</main>
+      <main className="app-main">{children}</main>
     </>
   );
 }
