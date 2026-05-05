@@ -26,7 +26,7 @@ const useCases = [
 export default function LandingPage() {
   return (
     <main className="public-site">
-      <section className="public-hero" style={{ backgroundImage: `linear-gradient(90deg, rgba(15, 36, 55, 0.9), rgba(15, 36, 55, 0.42)), url(${constructionImages.heroObraPublica})` }}>
+      <section className="public-hero" style={{ backgroundImage: `linear-gradient(180deg, rgba(15, 36, 55, 0.88), rgba(15, 36, 55, 0.58)), url(${constructionImages.heroObraPublica})` }}>
         <header className="public-nav">
           <a className="public-brand" href="/">
             <span><HardHat size={20} /></span>
@@ -77,15 +77,15 @@ export default function LandingPage() {
             </div>
           </aside>
         </div>
-      </section>
 
-      <section className="public-metrics">
-        {metrics.map((metric) => (
-          <article key={metric.label}>
-            <strong>{metric.value}</strong>
-            <span>{metric.label}</span>
-          </article>
-        ))}
+        <section className="public-metrics public-hero-metrics">
+          {metrics.map((metric) => (
+            <article key={metric.label}>
+              <strong>{metric.value}</strong>
+              <span>{metric.label}</span>
+            </article>
+          ))}
+        </section>
       </section>
 
       <section className="public-section public-split" id="plataforma">
