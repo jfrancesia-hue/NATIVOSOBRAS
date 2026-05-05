@@ -1,6 +1,7 @@
-import { AlertTriangle, MapPinned, Plus } from "lucide-react";
+import { AlertTriangle, Bot, BrainCircuit, MapPinned, Plus, ScanSearch, TrendingUp } from "lucide-react";
 import { getAlertas, getObras } from "@/lib/data";
 import { EmptyState, KpiCard, obraPinPosition } from "../components";
+import { AiActionCenter } from "./ai-action-center";
 
 const money = new Intl.NumberFormat("es-AR", { style: "currency", currency: "ARS", maximumFractionDigits: 0 });
 
@@ -30,6 +31,28 @@ export default async function DashboardPage() {
         <KpiCard label="Presupuesto total" value={money.format(presupuesto)} />
         <KpiCard label="Ejecutado" value={money.format(ejecutado)} />
       </section>
+
+      <section className="ai-decision-panel">
+        <div className="ai-decision-main">
+          <span className="eyebrow">Copiloto IA</span>
+          <h2>Prioridad de hoy: auditar certificados con avance fisico bajo</h2>
+          <p>
+            La IA cruza avance fisico, avance financiero, alertas activas y ausencia de evidencia reciente para sugerir donde actuar primero.
+          </p>
+          <div className="ai-action-row">
+            <span><BrainCircuit size={18} /> Riesgo predictivo 92%</span>
+            <span><TrendingUp size={18} /> Desvio financiero probable</span>
+            <span><ScanSearch size={18} /> Evidencia a revisar</span>
+          </div>
+        </div>
+        <div className="ai-decision-side">
+          <Bot size={28} />
+          <strong>Accion recomendada</strong>
+          <p>Pedir evidencia nueva, bloquear aprobacion automatica y enviar inspector al punto GPS.</p>
+        </div>
+      </section>
+
+      <AiActionCenter />
 
       <section className="grid two-cols">
         <div className="panel">
