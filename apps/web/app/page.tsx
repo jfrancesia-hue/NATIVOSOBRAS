@@ -43,8 +43,8 @@ export default function LandingPage() {
           </div>
         </header>
 
-        <div className="public-hero-content">
-          <div>
+        <div className="public-hero-content public-hero-balanced">
+          <div className="public-hero-copy">
             <span className="eyebrow">GovTech + construccion + auditoria</span>
             <h1>Control inteligente de obras publicas y privadas</h1>
             <p>
@@ -57,7 +57,7 @@ export default function LandingPage() {
             </div>
           </div>
 
-          <aside className="public-control-card">
+          <aside className="public-control-card public-control-inline">
             <div className="public-card-top">
               <span>Obra observada</span>
               <strong>Hospital Modular Norte</strong>
