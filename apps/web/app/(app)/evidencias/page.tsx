@@ -1,4 +1,5 @@
-import { Camera } from "lucide-react";
+import { Bot, Camera, ScanSearch } from "lucide-react";
+import { analyzeEvidence } from "@/lib/ai-engine";
 import { getEvidencias } from "@/lib/data";
 import { EmptyState } from "../components";
 
@@ -17,18 +18,25 @@ export default async function EvidenciasPage() {
         {evidencias.length === 0 ? (
           <EmptyState title="Sin evidencias cargadas" description="Cuando los inspectores registren avances, las fotos con GPS apareceran aca." />
         ) : null}
-        {evidencias.map((evidencia) => (
-          <article className="evidence-card" key={evidencia.id}>
-            <div className="evidence-photo" style={{ backgroundImage: `url(${evidencia.foto})` }}>
-              <span><Camera size={16} /> GPS validado</span>
-            </div>
-            <div>
-              <strong>{evidencia.porcentaje}% de avance</strong>
-              <p>{evidencia.descripcion}</p>
-              <small>{evidencia.inspector} / {new Date(evidencia.fecha).toLocaleString("es-AR")}</small>
-            </div>
-          </article>
-        ))}
+        {evidencias.map((evidencia) => {
+          const ai = analyzeEvidence(evidencia);
+          return (
+            <article className={`evidence-card ai-evidence-card ${ai.level}`} key={evidencia.id}>
+              <div className="evidence-photo" style={{ backgroundImage: `url(${evidencia.foto})` }}>
+                <span><Camera size={16} /> GPS validado</span>
+              </div>
+              <div>
+                <strong>{evidencia.porcentaje}% de avance</strong>
+                <p>{evidencia.descripcion}</p>
+                <small>{evidencia.inspector} / {new Date(evidencia.fecha).toLocaleString("es-AR")}</small>
+                <div className="evidence-ai-check">
+                  <b><Bot size={15} /> {ai.score}% IA</b>
+                  <span><ScanSearch size={15} /> {ai.label}</span>
+                </div>
+              </div>
+            </article>
+          );
+        })}
       </section>
     </>
   );

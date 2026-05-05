@@ -1,3 +1,5 @@
+import { Bot, ShieldAlert } from "lucide-react";
+import { analyzeProveedor } from "@/lib/ai-engine";
 import { getProveedores } from "@/lib/data";
 import { EmptyState } from "../components";
 
@@ -17,7 +19,8 @@ export default async function ProveedoresPage() {
         {proveedores.length > 0 ? (
           <div className="provider-grid">
             {proveedores.map((proveedor) => {
-              const riesgo = Number(proveedor.calificacion) < 7 ? "amarillo" : "verde";
+              const ai = analyzeProveedor(proveedor);
+              const riesgo = ai.level;
               return (
                 <article className="provider-card" key={proveedor.cuit}>
                   <div className="provider-top">
@@ -37,6 +40,11 @@ export default async function ProveedoresPage() {
                     <span className={`dot ${riesgo}`} />
                     {riesgo === "verde" ? "Proveedor confiable" : "Requiere seguimiento"}
                   </span>
+                  <div className="provider-ai">
+                    <strong><Bot size={16} /> Riesgo IA {ai.riskScore}%</strong>
+                    <p>{ai.recommendation}</p>
+                    <span><ShieldAlert size={15} /> {ai.reasons.join(" / ")}</span>
+                  </div>
                 </article>
               );
             })}

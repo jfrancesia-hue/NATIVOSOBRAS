@@ -1,11 +1,14 @@
 import { FileText } from "lucide-react";
-import { getAlertas, getEvidencias, getObras } from "@/lib/data";
+import { analyzePortfolio, generateExecutiveReport } from "@/lib/ai-engine";
+import { getAlertas, getEvidencias, getObras, getProveedores } from "@/lib/data";
 import { PrintButton } from "./print-button";
 
 const money = new Intl.NumberFormat("es-AR", { style: "currency", currency: "ARS", maximumFractionDigits: 0 });
 
 export default async function InformePage() {
-  const [obras, alertas, evidencias] = await Promise.all([getObras(), getAlertas(), getEvidencias()]);
+  const [obras, alertas, evidencias, proveedores] = await Promise.all([getObras(), getAlertas(), getEvidencias(), getProveedores()]);
+  const ai = analyzePortfolio(obras, alertas, evidencias, proveedores);
+  const aiReport = generateExecutiveReport(obras, alertas, evidencias, proveedores);
   const presupuesto = obras.reduce((acc, obra) => acc + Number(obra.presupuesto_total), 0);
   const ejecutado = obras.reduce((acc, obra) => acc + Number(obra.monto_ejecutado), 0);
 
@@ -32,12 +35,21 @@ export default async function InformePage() {
           <div><span>Ejecutado</span><strong>{money.format(ejecutado)}</strong></div>
           <div><span>Alertas</span><strong>{alertas.length}</strong></div>
         </div>
+        <h2>Resumen generado por IA</h2>
+        <div className="report-list ai-report-print">
+          {aiReport.map((line) => (
+            <div key={line}>
+              <strong>Decision</strong>
+              <span>{line}</span>
+            </div>
+          ))}
+        </div>
         <h2>Obras criticas</h2>
         <div className="report-list">
-          {obras.map((obra) => (
-            <div key={obra.id}>
-              <strong>{obra.nombre}</strong>
-              <span>{obra.avance_fisico}% fisico / {obra.avance_financiero}% financiero / {obra.semaforo}</span>
+          {ai.insights.map((insight) => (
+            <div key={insight.obraId}>
+              <strong>{insight.obraNombre}</strong>
+              <span>{insight.riskScore}% riesgo IA / {insight.certificateDecision} / {insight.recommendedAction}</span>
             </div>
           ))}
         </div>

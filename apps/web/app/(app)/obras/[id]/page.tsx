@@ -1,4 +1,5 @@
-import { ArrowLeft, Camera, FileText, MapPinned, Plus, ShieldCheck } from "lucide-react";
+import { ArrowLeft, Bot, Camera, CheckCircle2, FileText, MapPinned, Plus, ShieldAlert, ShieldCheck } from "lucide-react";
+import { analyzeObra } from "@/lib/ai-engine";
 import { getAlertas, getEvidencias, getObraById } from "@/lib/data";
 import { EmptyState, obraPinPosition } from "../../components";
 
@@ -12,6 +13,8 @@ export default async function ObraDetallePage({ params }: { params: Promise<{ id
   if (!obra) {
     return <EmptyState title="Obra no encontrada" description="No hay informacion visible para esta obra." />;
   }
+
+  const ai = analyzeObra(obra, evidencias, alertasObra);
 
   return (
     <>
@@ -48,6 +51,24 @@ export default async function ObraDetallePage({ params }: { params: Promise<{ id
           <span>Semaforo</span>
           <strong>{obra.semaforo}</strong>
           <small>{alertasObra.length} alertas activas</small>
+        </div>
+      </section>
+
+      <section className={`obra-ai-panel ${ai.level}`}>
+        <div>
+          <span className="eyebrow"><Bot size={16} /> Analisis IA de obra</span>
+          <h2>{ai.certificateDecision}</h2>
+          <p>{ai.diagnosis}</p>
+          <div className="ai-action-row">
+            <span><ShieldAlert size={18} /> Riesgo {ai.riskScore}%</span>
+            <span><FileText size={18} /> Desvio {ai.financialGap}%</span>
+            <span><Camera size={18} /> {ai.evidenceHealth}</span>
+          </div>
+        </div>
+        <div className="obra-ai-steps">
+          {ai.nextSteps.map((step) => (
+            <span key={step}><CheckCircle2 size={16} /> {step}</span>
+          ))}
         </div>
       </section>
 

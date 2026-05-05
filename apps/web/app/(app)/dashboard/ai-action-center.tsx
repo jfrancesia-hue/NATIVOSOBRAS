@@ -2,6 +2,7 @@
 
 import { useMemo, useState } from "react";
 import { Bot, Camera, FileWarning, MapPinned, MessageSquareWarning, PauseCircle, Send, ShieldAlert } from "lucide-react";
+import type { ObraAiInsight } from "@/lib/ai-engine";
 
 const playbooks = [
   {
@@ -38,9 +39,16 @@ const playbooks = [
   }
 ];
 
-export function AiActionCenter() {
+type AiActionCenterProps = {
+  insights: ObraAiInsight[];
+  providerRisks: Array<{ name: string; riskScore: number; recommendation: string }>;
+};
+
+export function AiActionCenter({ insights, providerRisks }: AiActionCenterProps) {
   const [selectedId, setSelectedId] = useState(playbooks[0].id);
   const selected = useMemo(() => playbooks.find((playbook) => playbook.id === selectedId) ?? playbooks[0], [selectedId]);
+  const priority = insights[0];
+  const provider = providerRisks[0];
   const Icon = selected.icon;
 
   return (
@@ -49,6 +57,18 @@ export function AiActionCenter() {
         <span className="eyebrow">Soluciones inmediatas con IA</span>
         <h2>Que puede resolver la plataforma en los proximos 10 minutos?</h2>
         <p>Playbooks operativos para obra publica y privada: riesgo, evidencia, pagos, proveedores y territorio.</p>
+      </div>
+      <div className="ai-live-strip">
+        <article>
+          <span>Obra prioritaria</span>
+          <strong>{priority?.obraNombre ?? "Sin datos"}</strong>
+          <small>{priority ? `${priority.riskScore}% riesgo IA / ${priority.certificateDecision}` : "Cargar datos para activar scoring"}</small>
+        </article>
+        <article>
+          <span>Proveedor observado</span>
+          <strong>{provider?.name ?? "Sin proveedor"}</strong>
+          <small>{provider ? `${provider.riskScore}% riesgo / ${provider.recommendation}` : "Cargar historial de proveedores"}</small>
+        </article>
       </div>
       <div className="ai-playbook-grid">
         <div className="ai-playbook-list">

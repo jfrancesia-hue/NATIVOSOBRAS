@@ -1,12 +1,15 @@
 import { AlertTriangle, Bot, BrainCircuit, MapPinned, Plus, ScanSearch, TrendingUp } from "lucide-react";
-import { getAlertas, getObras } from "@/lib/data";
+import { analyzePortfolio } from "@/lib/ai-engine";
+import { getAlertas, getEvidencias, getObras, getProveedores } from "@/lib/data";
 import { EmptyState, KpiCard, obraPinPosition } from "../components";
 import { AiActionCenter } from "./ai-action-center";
 
 const money = new Intl.NumberFormat("es-AR", { style: "currency", currency: "ARS", maximumFractionDigits: 0 });
 
 export default async function DashboardPage() {
-  const [obras, alertas] = await Promise.all([getObras(), getAlertas()]);
+  const [obras, alertas, evidencias, proveedores] = await Promise.all([getObras(), getAlertas(), getEvidencias(), getProveedores()]);
+  const ai = analyzePortfolio(obras, alertas, evidencias, proveedores);
+  const priority = ai.priority;
   const activas = obras.filter((obra) => obra.estado === "en_ejecucion").length;
   const presupuesto = obras.reduce((acc, obra) => acc + Number(obra.presupuesto_total), 0);
   const ejecutado = obras.reduce((acc, obra) => acc + Number(obra.monto_ejecutado), 0);
@@ -30,29 +33,31 @@ export default async function DashboardPage() {
         <KpiCard label="Avance promedio" value={`${avancePromedio}%`} />
         <KpiCard label="Presupuesto total" value={money.format(presupuesto)} />
         <KpiCard label="Ejecutado" value={money.format(ejecutado)} />
+        <KpiCard label="Riesgo IA critico" value={ai.summary.critical} />
+        <KpiCard label="Certificados a frenar" value={ai.summary.blocked} />
       </section>
 
       <section className="ai-decision-panel">
         <div className="ai-decision-main">
           <span className="eyebrow">Copiloto IA</span>
-          <h2>Prioridad de hoy: auditar certificados con avance fisico bajo</h2>
+          <h2>{priority ? `Prioridad de hoy: ${priority.obraNombre}` : "Prioridad de hoy: cargar datos operativos"}</h2>
           <p>
-            La IA cruza avance fisico, avance financiero, alertas activas y ausencia de evidencia reciente para sugerir donde actuar primero.
+            {priority?.diagnosis ?? "La IA necesita obras, evidencias y proveedores para activar recomendaciones accionables."}
           </p>
           <div className="ai-action-row">
-            <span><BrainCircuit size={18} /> Riesgo predictivo 92%</span>
-            <span><TrendingUp size={18} /> Desvio financiero probable</span>
-            <span><ScanSearch size={18} /> Evidencia a revisar</span>
+            <span><BrainCircuit size={18} /> Riesgo predictivo {priority?.riskScore ?? 0}%</span>
+            <span><TrendingUp size={18} /> Desvio {priority?.financialGap ?? 0}%</span>
+            <span><ScanSearch size={18} /> {priority?.evidenceHealth ?? "Sin evidencia"}</span>
           </div>
         </div>
         <div className="ai-decision-side">
           <Bot size={28} />
           <strong>Accion recomendada</strong>
-          <p>Pedir evidencia nueva, bloquear aprobacion automatica y enviar inspector al punto GPS.</p>
+          <p>{priority?.recommendedAction ?? "Cargar una obra y su primer avance para generar la accion recomendada."}</p>
         </div>
       </section>
 
-      <AiActionCenter />
+      <AiActionCenter insights={ai.insights.slice(0, 4)} providerRisks={ai.providerRisks.slice(0, 3)} />
 
       <section className="grid two-cols">
         <div className="panel">

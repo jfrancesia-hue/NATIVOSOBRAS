@@ -1,7 +1,8 @@
-import { Bell, Building2, ClipboardCheck, FileText, Gauge, Images, LogOut, ShieldCheck } from "lucide-react";
+import { Bell, Bot, Building2, ClipboardCheck, FileText, Gauge, Images, LogOut, ShieldCheck } from "lucide-react";
 
 const nav = [
   { href: "/dashboard", label: "Tablero", icon: Gauge },
+  { href: "/ia", label: "Centro IA", icon: Bot },
   { href: "/obras", label: "Obras", icon: Building2 },
   { href: "/evidencias", label: "Evidencias", icon: Images },
   { href: "/proveedores", label: "Proveedores", icon: ClipboardCheck },
