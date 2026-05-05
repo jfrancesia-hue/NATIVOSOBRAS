@@ -1,0 +1,203 @@
+PROMPT MAESTRO — Nativos Obras360 (Infraestructura Pública)
+
+Copiá y pegá esto en Codex 👇
+
+🧠 PROMPT
+
+Actuá como Principal Software Architect + GovTech Specialist + Product Manager con experiencia en plataformas de obra pública, sistemas de auditoría estatal y soluciones SaaS multi-tenant.
+
+Tu misión es construir un sistema completo llamado:
+
+NATIVOS OBRAS360
+
+Una plataforma para gestión, control y optimización de obras públicas para gobiernos provinciales y municipales en Argentina.
+
+🎯 OBJETIVO DEL SISTEMA
+
+Reducir entre 15% y 30% el gasto en obra pública mediante:
+
+Control en tiempo real
+Auditoría digital
+Optimización de presupuestos
+Transparencia operativa
+🏗️ ARQUITECTURA
+
+Stack obligatorio:
+
+Frontend Web: Next.js (App Router)
+App móvil: Expo (React Native)
+Backend: Supabase (PostgreSQL + Auth + Storage + RLS)
+API adicional: Node.js + Express (para lógica compleja)
+Hosting: Vercel + Supabase Cloud
+👤 ROLES DEL SISTEMA
+
+Crear sistema multi-rol:
+
+superadmin (control total)
+ministro (dashboard ejecutivo)
+inspector (carga de avances)
+proveedor (participa en licitaciones)
+auditor (control y trazabilidad)
+🧩 MÓDULOS PRINCIPALES
+1. 🏗️ GESTIÓN DE OBRAS
+Crear obra:
+nombre
+ubicación (lat/lng)
+presupuesto total
+fechas
+organismo responsable
+Estados:
+planificada
+en ejecución
+pausada
+finalizada
+2. 📸 CONTROL DE AVANCE (CORE)
+
+App móvil para inspector:
+
+Subir fotos con:
+geolocalización obligatoria
+timestamp automático
+% de avance estimado
+Guardar en Supabase Storage
+Tabla: avances_obra
+obra_id
+porcentaje
+descripcion
+foto_url
+lat
+lng
+fecha
+3. 💰 CONTROL PRESUPUESTARIO
+Comparar:
+dinero ejecutado vs avance físico
+Lógica:
+si ejecutado > avance → ALERTA ROJA
+si desvío > 20% → marcar como riesgo
+4. 🚨 SISTEMA DE ALERTAS
+Obras atrasadas
+Sobrecostos
+Falta de avances recientes
+Proveedores con bajo rendimiento
+
+Mostrar en dashboard con:
+
+semáforo (verde / amarillo / rojo)
+5. 📊 DASHBOARD EJECUTIVO
+
+Para ministro:
+
+Total de obras activas
+% promedio de avance
+presupuesto total vs ejecutado
+ranking de obras críticas
+mapa interactivo
+6. 📦 PROVEEDORES Y LICITACIONES
+Registro de empresas
+Historial de obras
+Calificación automática:
+cumplimiento
+tiempos
+desviaciones
+Sistema de licitación simple:
+cargar ofertas
+comparar automáticamente
+7. 🧾 AUDITORÍA TOTAL
+
+Tabla: audit_events
+
+Registrar:
+
+quién hizo qué
+cuándo
+desde dónde
+
+Eventos:
+
+creación de obra
+aprobación
+carga de avance
+modificación de presupuesto
+🔐 SEGURIDAD
+Row Level Security (RLS) en Supabase
+Cada usuario solo ve lo que le corresponde
+Uso de service role solo en backend seguro
+🎨 DISEÑO
+
+Estética institucional:
+
+fondo blanco + azul profundo
+acentos turquesa (Nativos)
+UI sobria, clara, sin exageraciones
+estilo gobierno moderno (no startup flashy)
+📱 APP MÓVIL (INSPECTOR)
+
+Pantallas:
+
+Login
+Lista de obras asignadas
+Cargar avance:
+foto
+% avance
+comentario
+Historial de avances
+🌍 FUNCIONALIDAD CLAVE DIFERENCIAL
+
+Implementar:
+
+Validación de ubicación (no permitir carga sin GPS)
+Comparación automática avance vs dinero
+Alertas en tiempo real
+🎯 OUTPUT ESPERADO
+
+Generar:
+
+estructura completa del proyecto
+base de datos (SQL)
+endpoints API
+pantallas frontend (web + mobile)
+lógica de negocio
+sistema funcional (NO DEMO)
+
+FIN DEL PROMPT
+
+🧠 EXPLICACIÓN SIMPLE (para tu socia o cualquiera)
+
+Podés decirle esto tal cual 👇
+
+“Esto es un sistema para que el gobierno deje de perder plata en obras.”
+
+Hoy pasa esto:
+
+Se paga más de lo que se construye
+No hay control en tiempo real
+Todo es lento y poco transparente
+
+👉 Resultado: se pierde mucha plata.
+
+¿Qué hace nuestra plataforma?
+
+📸 Los inspectores cargan fotos de la obra desde el celular
+📊 El sistema mide el avance real
+💰 Lo compara con la plata que se pagó
+🚨 Si algo no cierra → alerta automática
+
+Ejemplo simple:
+
+Se pagó 70% de la obra
+Pero solo está construida al 40%
+
+👉 El sistema lo detecta automáticamente.
+
+¿Para qué sirve?
+
+Evitar sobreprecios
+Detectar problemas antes
+Tomar decisiones rápido
+Ahorrar millones al Estado
+
+En resumen:
+
+👉 Es como un “control inteligente” de obras públicas
+👉 Hace que la plata alcance más
+👉 Y que todo sea más transparente

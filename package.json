@@ -1,0 +1,21 @@
+{
+  "name": "nativos-obras360",
+  "private": true,
+  "version": "0.1.0",
+  "description": "Plataforma GovTech para gestion, control y auditoria de obra publica.",
+  "scripts": {
+    "dev:web": "pnpm --filter @nativos/domain build && pnpm --filter @nativos/web dev",
+    "dev:api": "pnpm --filter @nativos/domain build && pnpm --filter @nativos/api dev",
+    "dev:mobile": "pnpm --filter @nativos/mobile start",
+    "build": "pnpm -r build",
+    "lint": "pnpm -r lint",
+    "typecheck": "pnpm -r typecheck",
+    "db:push": "supabase db push",
+    "db:reset": "supabase db reset",
+    "check": "pnpm typecheck && pnpm build"
+  },
+  "packageManager": "pnpm@9.15.0",
+  "engines": {
+    "node": ">=20"
+  }
+}

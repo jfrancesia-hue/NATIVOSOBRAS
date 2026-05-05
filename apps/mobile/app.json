@@ -1,0 +1,25 @@
+{
+  "expo": {
+    "name": "Nativos Obras360",
+    "slug": "nativos-obras360",
+    "scheme": "nativosobras360",
+    "orientation": "portrait",
+    "userInterfaceStyle": "light",
+    "plugins": [
+      "expo-router",
+      [
+        "expo-location",
+        {
+          "locationAlwaysAndWhenInUsePermission": "La app necesita GPS para validar cargas de avance en obra."
+        }
+      ],
+      [
+        "expo-image-picker",
+        {
+          "photosPermission": "La app necesita seleccionar fotos de avance de obra.",
+          "cameraPermission": "La app necesita tomar fotos de avance de obra."
+        }
+      ]
+    ]
+  }
+}

@@ -1,0 +1,943 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Nativos Obras360 - Demo Interactiva</title>
+    <style>
+      :root {
+        --navy: #071f37;
+        --navy-2: #0b2d4d;
+        --cyan: #13b8a6;
+        --orange: #f97316;
+        --blue: #2563eb;
+        --red: #dc3b16;
+        --yellow: #d89a13;
+        --green: #16a34a;
+        --ink: #172331;
+        --muted: #64748b;
+        --line: #d8e1ea;
+        --surface: #f5f8fb;
+        --card: rgba(255, 255, 255, 0.86);
+        --photo: url("https://upload.wikimedia.org/wikipedia/commons/thumb/4/45/FEMA_-_44130_-_Construction_equipment_and_workers_repairing_a_road_in_Texas.jpg/1280px-FEMA_-_44130_-_Construction_equipment_and_workers_repairing_a_road_in_Texas.jpg");
+      }
+
+      * { box-sizing: border-box; }
+      body {
+        margin: 0;
+        min-height: 100vh;
+        color: var(--ink);
+        font-family: Arial, Helvetica, sans-serif;
+        background:
+          radial-gradient(circle at 12% 10%, rgba(19, 184, 166, 0.18), transparent 30%),
+          radial-gradient(circle at 86% 4%, rgba(249, 115, 22, 0.14), transparent 26%),
+          linear-gradient(180deg, #eef5f8, #ffffff 36%, #f6f9fb);
+      }
+
+      button, input, textarea {
+        font: inherit;
+      }
+
+      button {
+        cursor: pointer;
+      }
+
+      .app {
+        display: grid;
+        grid-template-columns: 270px 1fr;
+        min-height: 100vh;
+      }
+
+      .sidebar {
+        position: sticky;
+        top: 0;
+        height: 100vh;
+        overflow: auto;
+        background:
+          linear-gradient(180deg, rgba(7, 31, 55, 0.96), rgba(11, 45, 77, 0.96)),
+          var(--photo) center / cover;
+        color: #fff;
+        padding: 24px 18px;
+      }
+
+      .brand {
+        display: flex;
+        gap: 12px;
+        align-items: center;
+        margin-bottom: 26px;
+      }
+
+      .mark {
+        display: grid;
+        place-items: center;
+        width: 46px;
+        height: 46px;
+        border-radius: 12px;
+        background: linear-gradient(145deg, var(--cyan), #8df8ec);
+        color: var(--navy);
+        font-weight: 900;
+        box-shadow: 0 14px 30px rgba(19, 184, 166, 0.28);
+      }
+
+      .brand small {
+        display: block;
+        color: #b8d3e7;
+        margin-top: 2px;
+      }
+
+      .nav {
+        display: grid;
+        gap: 8px;
+        margin-top: 20px;
+      }
+
+      .nav button {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        width: 100%;
+        border: 1px solid transparent;
+        border-radius: 12px;
+        background: transparent;
+        color: #e6f2fb;
+        padding: 12px;
+        text-align: left;
+        font-weight: 800;
+      }
+
+      .nav button:hover,
+      .nav button.active {
+        border-color: rgba(255, 255, 255, 0.18);
+        background: rgba(255, 255, 255, 0.12);
+      }
+
+      .nav-icon {
+        display: grid;
+        place-items: center;
+        width: 30px;
+        height: 30px;
+        border-radius: 10px;
+        background: rgba(255, 255, 255, 0.12);
+      }
+
+      .side-card {
+        margin-top: 26px;
+        border: 1px solid rgba(255, 255, 255, 0.16);
+        border-radius: 16px;
+        background: rgba(255, 255, 255, 0.1);
+        padding: 14px;
+        backdrop-filter: blur(14px);
+      }
+
+      .side-card strong {
+        display: block;
+        margin-bottom: 6px;
+      }
+
+      .side-card p {
+        margin: 0;
+        color: #cfe1ee;
+        font-size: 13px;
+        line-height: 1.45;
+      }
+
+      .main {
+        padding: 24px;
+      }
+
+      .topbar {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 18px;
+        margin-bottom: 22px;
+      }
+
+      .topbar h1 {
+        margin: 0 0 5px;
+        color: var(--navy);
+        font-size: clamp(30px, 4vw, 52px);
+        line-height: 1;
+      }
+
+      .topbar p,
+      p {
+        color: var(--muted);
+      }
+
+      .actions {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+      }
+
+      .btn {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+        min-height: 42px;
+        border: 0;
+        border-radius: 12px;
+        padding: 0 14px;
+        background: var(--cyan);
+        color: var(--navy);
+        font-weight: 900;
+        box-shadow: 0 14px 28px rgba(19, 184, 166, 0.2);
+      }
+
+      .btn.secondary {
+        background: #fff;
+        color: var(--navy);
+        border: 1px solid var(--line);
+        box-shadow: none;
+      }
+
+      .view {
+        display: none;
+      }
+
+      .view.active {
+        display: block;
+        animation: viewIn 260ms ease;
+      }
+
+      @keyframes viewIn {
+        from { opacity: 0; transform: translateY(8px); }
+        to { opacity: 1; transform: translateY(0); }
+      }
+
+      .grid {
+        display: grid;
+        gap: 16px;
+      }
+
+      .kpis {
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+      }
+
+      .two {
+        grid-template-columns: minmax(0, 1.15fr) minmax(360px, 0.85fr);
+      }
+
+      .card,
+      .panel {
+        border: 1px solid rgba(216, 225, 234, 0.82);
+        border-radius: 18px;
+        background: var(--card);
+        box-shadow: 0 20px 60px rgba(23, 35, 49, 0.08);
+        backdrop-filter: blur(12px);
+      }
+
+      .card {
+        padding: 18px;
+      }
+
+      .panel {
+        padding: 20px;
+      }
+
+      .label {
+        color: var(--muted);
+        font-size: 13px;
+      }
+
+      .metric {
+        display: block;
+        margin-top: 7px;
+        color: var(--navy);
+        font-size: 31px;
+        font-weight: 900;
+      }
+
+      .metric-row {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 8px;
+      }
+
+      .orb {
+        display: grid;
+        place-items: center;
+        width: 46px;
+        height: 46px;
+        border-radius: 14px;
+        color: #fff;
+        font-weight: 900;
+      }
+
+      .orb.cyan { background: linear-gradient(145deg, var(--cyan), #66f4e6); }
+      .orb.orange { background: linear-gradient(145deg, var(--orange), #ffbb72); }
+      .orb.blue { background: linear-gradient(145deg, var(--blue), #70a5ff); }
+      .orb.red { background: linear-gradient(145deg, var(--red), #ff8b6e); }
+
+      .map-stage {
+        position: relative;
+        min-height: 510px;
+        overflow: hidden;
+        border-radius: 18px;
+        background:
+          linear-gradient(180deg, rgba(7, 31, 55, 0.2), rgba(7, 31, 55, 0.02)),
+          linear-gradient(90deg, rgba(11, 45, 77, .08) 1px, transparent 1px),
+          linear-gradient(rgba(11, 45, 77, .08) 1px, transparent 1px),
+          #e9f4f5;
+        background-size: auto, 42px 42px, 42px 42px, auto;
+      }
+
+      .route {
+        position: absolute;
+        height: 6px;
+        border-radius: 999px;
+        background: linear-gradient(90deg, rgba(19, 184, 166, .08), rgba(19, 184, 166, .9), rgba(249, 115, 22, .75));
+        transform-origin: left center;
+      }
+
+      .route.r1 { left: 12%; top: 52%; width: 70%; transform: rotate(-17deg); }
+      .route.r2 { left: 18%; top: 70%; width: 54%; transform: rotate(24deg); }
+
+      .pin {
+        position: absolute;
+        display: grid;
+        place-items: center;
+        width: 34px;
+        height: 34px;
+        border: 4px solid #fff;
+        border-radius: 50%;
+        color: #fff;
+        font-size: 12px;
+        font-weight: 900;
+        box-shadow: 0 14px 30px rgba(23, 35, 49, 0.18);
+        animation: pulse 2.8s infinite;
+      }
+
+      @keyframes pulse {
+        0%, 100% { transform: translateY(0) scale(1); }
+        50% { transform: translateY(-5px) scale(1.04); }
+      }
+
+      .pin.red { background: var(--red); left: 58%; top: 31%; }
+      .pin.green { background: var(--green); left: 30%; top: 66%; animation-delay: .5s; }
+      .pin.yellow { background: var(--yellow); left: 74%; top: 57%; animation-delay: 1s; }
+
+      .floating-photo {
+        position: absolute;
+        left: 24px;
+        top: 24px;
+        width: min(330px, 42%);
+        min-height: 210px;
+        overflow: hidden;
+        border: 1px solid rgba(255, 255, 255, .8);
+        border-radius: 18px;
+        background:
+          linear-gradient(180deg, transparent, rgba(7,31,55,.7)),
+          var(--photo) center / cover;
+        box-shadow: 0 24px 64px rgba(23, 35, 49, .2);
+        transform: rotate(-3deg);
+      }
+
+      .floating-photo span {
+        position: absolute;
+        left: 12px;
+        bottom: 12px;
+        border-radius: 999px;
+        background: rgba(7,31,55,.78);
+        color: #fff;
+        padding: 8px 10px;
+        font-size: 12px;
+        font-weight: 900;
+      }
+
+      .selected-card {
+        position: absolute;
+        right: 24px;
+        bottom: 24px;
+        width: min(360px, calc(100% - 48px));
+        border: 1px solid rgba(255,255,255,.8);
+        border-radius: 18px;
+        background: rgba(255,255,255,.88);
+        padding: 18px;
+        box-shadow: 0 24px 64px rgba(23, 35, 49, .18);
+      }
+
+      .selected-card h3 {
+        margin: 0 0 6px;
+        color: var(--navy);
+      }
+
+      .status {
+        display: inline-flex;
+        align-items: center;
+        gap: 7px;
+        font-size: 12px;
+        font-weight: 900;
+      }
+
+      .dot {
+        width: 10px;
+        height: 10px;
+        border-radius: 50%;
+      }
+
+      .red-text { color: var(--red); }
+      .yellow-text { color: var(--yellow); }
+      .green-text { color: var(--green); }
+      .dot.red { background: var(--red); }
+      .dot.yellow { background: var(--yellow); }
+      .dot.green { background: var(--green); }
+
+      .bar-group {
+        display: grid;
+        gap: 7px;
+        margin-top: 14px;
+      }
+
+      .bar-group label {
+        display: flex;
+        justify-content: space-between;
+        color: var(--muted);
+        font-size: 12px;
+      }
+
+      .bar {
+        height: 9px;
+        overflow: hidden;
+        border-radius: 999px;
+        background: #e5edf3;
+      }
+
+      .bar span {
+        display: block;
+        height: 100%;
+        border-radius: inherit;
+        background: var(--cyan);
+      }
+
+      .bar span.orange { background: var(--orange); }
+
+      .ops-list {
+        display: grid;
+        gap: 12px;
+      }
+
+      .ops-card {
+        display: grid;
+        grid-template-columns: minmax(0, 1fr) minmax(180px, .75fr) auto;
+        gap: 14px;
+        align-items: center;
+        border: 1px solid var(--line);
+        border-left: 7px solid var(--red);
+        border-radius: 16px;
+        background: #fff;
+        padding: 14px;
+        transition: transform 160ms ease, box-shadow 160ms ease;
+      }
+
+      .ops-card:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 18px 40px rgba(23,35,49,.12);
+      }
+
+      .ops-card.yellow { border-left-color: var(--yellow); }
+      .ops-card.green { border-left-color: var(--green); }
+      .ops-card strong { color: var(--navy); }
+      .ops-card small { color: var(--muted); }
+
+      .evidence-grid,
+      .provider-grid,
+      .notification-grid {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 16px;
+      }
+
+      .evidence-card {
+        overflow: hidden;
+      }
+
+      .evidence-photo {
+        position: relative;
+        min-height: 230px;
+        background-position: center;
+        background-size: cover;
+      }
+
+      .evidence-photo::after {
+        content: "";
+        position: absolute;
+        inset: 0;
+        background: linear-gradient(180deg, transparent 45%, rgba(7,31,55,.68));
+      }
+
+      .evidence-photo button {
+        position: absolute;
+        z-index: 2;
+        left: 12px;
+        bottom: 12px;
+        border: 0;
+        border-radius: 999px;
+        background: rgba(7,31,55,.82);
+        color: #fff;
+        padding: 9px 12px;
+        font-weight: 900;
+      }
+
+      .evidence-body {
+        display: grid;
+        gap: 8px;
+        padding: 16px;
+      }
+
+      .provider-card,
+      .notification-card,
+      .mobile-demo {
+        padding: 18px;
+      }
+
+      .score {
+        display: grid;
+        place-items: center;
+        width: 64px;
+        height: 64px;
+        border-radius: 50%;
+        background: conic-gradient(var(--cyan) 0 82%, #e8eef4 82% 100%);
+        color: var(--navy);
+        font-size: 20px;
+        font-weight: 900;
+      }
+
+      .provider-top {
+        display: flex;
+        justify-content: space-between;
+        gap: 14px;
+        margin-bottom: 18px;
+      }
+
+      .notification-card {
+        display: flex;
+        gap: 14px;
+      }
+
+      .notification-icon {
+        display: grid;
+        place-items: center;
+        flex: 0 0 54px;
+        width: 54px;
+        height: 54px;
+        border-radius: 16px;
+        color: #fff;
+        font-weight: 900;
+      }
+
+      .notification-icon.whatsapp { background: var(--green); }
+      .notification-icon.email { background: var(--blue); }
+      .notification-icon.alerta { background: var(--orange); }
+
+      .phone-shell {
+        width: min(360px, 100%);
+        margin: 0 auto;
+        border: 12px solid #101827;
+        border-radius: 34px;
+        background: var(--surface);
+        overflow: hidden;
+        box-shadow: 0 24px 64px rgba(23,35,49,.18);
+      }
+
+      .phone-top {
+        background: var(--navy-2);
+        color: white;
+        padding: 18px;
+        font-weight: 900;
+      }
+
+      .phone-body {
+        display: grid;
+        gap: 12px;
+        padding: 14px;
+      }
+
+      .phone-pill-row {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 8px;
+      }
+
+      .phone-pill {
+        min-height: 42px;
+        border: 0;
+        border-radius: 12px;
+        background: var(--navy-2);
+        color: #fff;
+        font-weight: 900;
+      }
+
+      .phone-pill.done {
+        background: var(--green);
+      }
+
+      .report {
+        max-width: 920px;
+        margin: 0 auto;
+        padding: 34px;
+      }
+
+      .report-kpis {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 12px;
+        margin: 20px 0;
+      }
+
+      .modal {
+        position: fixed;
+        inset: 0;
+        z-index: 20;
+        display: none;
+        place-items: center;
+        background: rgba(7, 31, 55, .72);
+        padding: 20px;
+      }
+
+      .modal.open {
+        display: grid;
+      }
+
+      .modal-content {
+        width: min(900px, 100%);
+        overflow: hidden;
+        border-radius: 20px;
+        background: #fff;
+        box-shadow: 0 30px 90px rgba(0,0,0,.32);
+      }
+
+      .modal-image {
+        min-height: 460px;
+        background-position: center;
+        background-size: cover;
+      }
+
+      .modal-body {
+        display: flex;
+        justify-content: space-between;
+        gap: 16px;
+        padding: 18px;
+      }
+
+      @media (max-width: 980px) {
+        .app,
+        .kpis,
+        .two,
+        .evidence-grid,
+        .provider-grid,
+        .notification-grid,
+        .report-kpis {
+          grid-template-columns: 1fr;
+        }
+
+        .sidebar {
+          position: relative;
+          height: auto;
+        }
+
+        .ops-card {
+          grid-template-columns: 1fr;
+        }
+
+        .floating-photo {
+          display: none;
+        }
+      }
+
+      @media print {
+        .sidebar, .topbar, .no-print {
+          display: none !important;
+        }
+        .app { display: block; }
+        .main { padding: 0; }
+        .view { display: none; }
+        #informe { display: block; }
+        .report { box-shadow: none; border: 0; }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="app">
+      <aside class="sidebar">
+        <div class="brand">
+          <span class="mark">N</span>
+          <div><strong>Nativos</strong><small>Obras360</small></div>
+        </div>
+        <div class="nav">
+          <button type="button" class="active" data-view="dashboard"><span class="nav-icon">01</span> Tablero</button>
+          <button type="button" data-view="obra"><span class="nav-icon">02</span> Detalle obra</button>
+          <button type="button" data-view="evidencias"><span class="nav-icon">03</span> Evidencias</button>
+          <button type="button" data-view="proveedores"><span class="nav-icon">04</span> Proveedores</button>
+          <button type="button" data-view="notificaciones"><span class="nav-icon">05</span> Alertas</button>
+          <button type="button" data-view="mobile"><span class="nav-icon">06</span> App inspector</button>
+          <button type="button" data-view="informe"><span class="nav-icon">PDF</span> Informe</button>
+        </div>
+        <div class="side-card">
+          <strong>Demo funcional</strong>
+          <p>Probá los pins del mapa, abrí evidencias, simulá una carga mobile e imprimí el informe.</p>
+        </div>
+      </aside>
+
+      <main class="main">
+        <div class="topbar no-print">
+          <div>
+            <h1 id="pageTitle">Tablero ejecutivo</h1>
+            <p id="pageSubtitle">Control visual de obras, evidencias, alertas y proveedores.</p>
+          </div>
+          <div class="actions">
+            <button type="button" class="btn secondary" id="simulateAlert">Simular alerta</button>
+            <button type="button" class="btn" data-view-shortcut="mobile">Cargar avance</button>
+          </div>
+        </div>
+
+        <section class="view active" id="dashboard">
+          <div class="grid kpis">
+            <div class="card metric-row"><div><span class="label">Obras activas</span><strong class="metric">18</strong></div><span class="orb cyan">18</span></div>
+            <div class="card metric-row"><div><span class="label">Avance promedio</span><strong class="metric">47%</strong></div><span class="orb blue">%</span></div>
+            <div class="card metric-row"><div><span class="label">Ejecutado</span><strong class="metric">$1.640M</strong></div><span class="orb orange">$</span></div>
+            <div class="card metric-row"><div><span class="label">Alertas</span><strong class="metric" id="alertCount">3</strong></div><span class="orb red">!</span></div>
+          </div>
+
+          <div class="grid two" style="margin-top:16px">
+            <div class="panel">
+              <h2>Mapa operativo vivo</h2>
+              <div class="map-stage">
+                <span class="route r1"></span>
+                <span class="route r2"></span>
+                <div class="floating-photo"><span>Imagen real de obra</span></div>
+                <button type="button" class="pin red" data-obra="Hospital Modular Norte">1</button>
+                <button type="button" class="pin green" data-obra="Ruta Provincial 18">2</button>
+                <button type="button" class="pin yellow" data-obra="Red Cloacal Este">3</button>
+                <div class="selected-card" id="selectedObra">
+                  <span class="status red-text"><span class="dot red"></span> riesgo rojo</span>
+                  <h3>Hospital Modular Norte</h3>
+                  <p>Pagado 70%, avance físico 41%. Desvío crítico detectado.</p>
+                  <div class="bar-group">
+                    <label>Avance físico <b>41%</b></label><div class="bar"><span style="width:41%"></span></div>
+                    <label>Ejecutado <b>70%</b></label><div class="bar"><span class="orange" style="width:70%"></span></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="panel">
+              <h2>Obras críticas</h2>
+              <div class="ops-list">
+                <article class="ops-card"><div><strong>Hospital Modular Norte</strong><small>Ministerio de Infraestructura</small></div><div class="bar-group"><label>41% / 70%</label><div class="bar"><span class="orange" style="width:70%"></span></div></div><span class="status red-text"><span class="dot red"></span>rojo</span></article>
+                <article class="ops-card yellow"><div><strong>Red Cloacal Este</strong><small>Municipio</small></div><div class="bar-group"><label>38% / 54%</label><div class="bar"><span class="orange" style="width:54%"></span></div></div><span class="status yellow-text"><span class="dot yellow"></span>observación</span></article>
+                <article class="ops-card green"><div><strong>Ruta Provincial 18</strong><small>Vialidad Provincial</small></div><div class="bar-group"><label>52% / 48%</label><div class="bar"><span style="width:52%"></span></div></div><span class="status green-text"><span class="dot green"></span>en rango</span></article>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section class="view" id="obra">
+          <div class="grid kpis">
+            <div class="card"><span class="label">Presupuesto</span><strong class="metric">$980M</strong></div>
+            <div class="card"><span class="label">Ejecutado</span><strong class="metric">$690M</strong></div>
+            <div class="card"><span class="label">Avance físico</span><strong class="metric">41%</strong></div>
+            <div class="card"><span class="label">Desvío</span><strong class="metric red-text">+29%</strong></div>
+          </div>
+          <div class="grid two" style="margin-top:16px">
+            <div class="panel">
+              <h2>Hospital Modular Norte</h2>
+              <p>Detalle ejecutivo con mapa, alertas, proveedor y evidencias de campo.</p>
+              <div class="map-stage" style="margin-top:16px;min-height:360px">
+                <span class="route r1"></span><button type="button" class="pin red" style="left:56%;top:38%">1</button>
+                <div class="selected-card"><span class="status red-text"><span class="dot red"></span>Desvío financiero</span><h3>Geocerca validada</h3><p>Última evidencia cargada a 84m del punto de obra.</p></div>
+              </div>
+            </div>
+            <div class="panel">
+              <h2>Timeline</h2>
+              <div class="ops-list">
+                <article class="ops-card"><div><strong>05/05/2026</strong><small>Foto + GPS + avance 41%</small></div><span class="status green-text"><span class="dot green"></span>validado</span></article>
+                <article class="ops-card yellow"><div><strong>28/04/2026</strong><small>Hormigonado base sector B</small></div><span class="status yellow-text"><span class="dot yellow"></span>observación</span></article>
+                <article class="ops-card"><div><strong>21/04/2026</strong><small>Pago certificado 70%</small></div><span class="status red-text"><span class="dot red"></span>alerta</span></article>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section class="view" id="evidencias">
+          <div class="evidence-grid" id="evidenceGrid"></div>
+        </section>
+
+        <section class="view" id="proveedores">
+          <div class="provider-grid">
+            <article class="card provider-card"><div class="provider-top"><div><strong>Constructora Andina SA</strong><p>30-70111222-8</p></div><span class="score">8.7</span></div><div class="bar-group"><label>Cumplimiento <b>91%</b></label><div class="bar"><span style="width:91%"></span></div><label>Desvío promedio <b>6%</b></label><div class="bar"><span class="orange" style="width:24%"></span></div></div></article>
+            <article class="card provider-card"><div class="provider-top"><div><strong>InfraSur SRL</strong><p>30-70999111-4</p></div><span class="score">6.2</span></div><div class="bar-group"><label>Cumplimiento <b>72%</b></label><div class="bar"><span style="width:72%"></span></div><label>Desvío promedio <b>19%</b></label><div class="bar"><span class="orange" style="width:76%"></span></div></div></article>
+            <article class="card provider-card"><div class="provider-top"><div><strong>Obras del Litoral SA</strong><p>30-71555444-2</p></div><span class="score">7.8</span></div><div class="bar-group"><label>Cumplimiento <b>84%</b></label><div class="bar"><span style="width:84%"></span></div><label>Desvío promedio <b>9%</b></label><div class="bar"><span class="orange" style="width:36%"></span></div></div></article>
+          </div>
+        </section>
+
+        <section class="view" id="notificaciones">
+          <div class="notification-grid">
+            <article class="card notification-card"><span class="notification-icon whatsapp">W</span><div><strong>Mensaje a inspector</strong><p>Solicitar evidencia nueva en Hospital Modular Norte.</p><span class="status yellow-text"><span class="dot yellow"></span>pendiente</span></div></article>
+            <article class="card notification-card"><span class="notification-icon email">@</span><div><strong>Informe semanal</strong><p>Enviar resumen ejecutivo al Ministerio.</p><span class="status green-text"><span class="dot green"></span>programado</span></div></article>
+            <article class="card notification-card"><span class="notification-icon alerta">!</span><div><strong>Escalar riesgo rojo</strong><p>Notificar auditoría por desvío mayor al 20%.</p><span class="status red-text"><span class="dot red"></span>activo</span></div></article>
+          </div>
+        </section>
+
+        <section class="view" id="mobile">
+          <div class="grid two">
+            <div class="panel">
+              <h2>Simulador de app inspector</h2>
+              <p>Los botones cambian de estado para mostrar el flujo real de carga.</p>
+              <div class="phone-shell" style="margin-top:18px">
+                <div class="phone-top">Inspector · Hospital Modular Norte</div>
+                <div class="phone-body">
+                  <div class="card"><strong>Cargar avance</strong><p>Porcentaje informado: <b id="mobilePercent">46%</b></p><input id="percentInput" type="range" min="0" max="100" value="46" /></div>
+                  <div class="phone-pill-row"><button type="button" class="phone-pill" id="photoBtn">Tomar foto</button><button type="button" class="phone-pill" id="gpsBtn">Validar GPS</button></div>
+                  <textarea id="commentBox" rows="4">Estructura sector B con avance parcial.</textarea>
+                  <button type="button" class="btn" id="saveEvidence">Guardar evidencia</button>
+                </div>
+              </div>
+            </div>
+            <div class="panel">
+              <h2>Resultado</h2>
+              <div id="mobileResult" class="card"><strong>Esperando evidencia</strong><p>Validá foto y GPS para registrar un avance.</p></div>
+            </div>
+          </div>
+        </section>
+
+        <section class="view" id="informe">
+          <div class="topbar no-print" style="margin-bottom:16px">
+            <div><h1>Informe ejecutivo</h1><p>Listo para imprimir como PDF desde el navegador.</p></div>
+            <button type="button" class="btn" id="printReport">Imprimir PDF</button>
+          </div>
+          <div class="panel report">
+            <h1>Nativos Obras360</h1>
+            <p>Informe ejecutivo de control de obra pública</p>
+            <div class="report-kpis"><div class="card"><span class="label">Obras</span><strong class="metric">18</strong></div><div class="card"><span class="label">Presupuesto</span><strong class="metric">$2.920M</strong></div><div class="card"><span class="label">Ejecutado</span><strong class="metric">$1.640M</strong></div><div class="card"><span class="label">Alertas</span><strong class="metric">3</strong></div></div>
+            <div class="ops-list"><article class="ops-card"><div><strong>Hospital Modular Norte</strong><small>41% físico / 70% financiero / riesgo rojo</small></div></article><article class="ops-card yellow"><div><strong>Red Cloacal Este</strong><small>38% físico / 54% financiero / observación</small></div></article></div>
+          </div>
+        </section>
+      </main>
+    </div>
+
+    <div class="modal" id="modal">
+      <div class="modal-content">
+        <div class="modal-image" id="modalImage"></div>
+        <div class="modal-body">
+          <div><strong id="modalTitle">Evidencia</strong><p id="modalText">Detalle</p></div>
+          <button type="button" class="btn secondary" id="closeModal">Cerrar</button>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      (() => {
+        const views = {
+          dashboard: ["Tablero ejecutivo", "Control visual de obras, evidencias, alertas y proveedores."],
+          obra: ["Detalle de obra", "Mapa, timeline, desvio financiero y auditoria de una obra critica."],
+          evidencias: ["Galeria de evidencias", "Fotos reales, GPS, inspector y porcentaje informado."],
+          proveedores: ["Scoring de proveedores", "Comparacion visual de cumplimiento y desvios."],
+          notificaciones: ["Notificaciones", "Canales operativos para escalar alertas y pedir evidencia."],
+          mobile: ["App inspector", "Simulacion funcional de carga de foto, GPS y avance."],
+          informe: ["Informe ejecutivo", "Resumen listo para imprimir o exportar como PDF."]
+        };
+
+        const evidence = [
+          { title: "Hospital Modular Norte / 41%", text: "Mariana Quiroga / GPS validado / 05/05/2026", img: "https://upload.wikimedia.org/wikipedia/commons/thumb/4/45/FEMA_-_44130_-_Construction_equipment_and_workers_repairing_a_road_in_Texas.jpg/900px-FEMA_-_44130_-_Construction_equipment_and_workers_repairing_a_road_in_Texas.jpg" },
+          { title: "Base estructural / 36%", text: "Mariana Quiroga / Sector B / 28/04/2026", img: "https://upload.wikimedia.org/wikipedia/commons/thumb/3/3d/A1%2C_Going-to-the-Sun_Road%2C_construction_crew%2C_Knife_River%2C_paving_below_East_Tunnel%2C_2011.jpg/900px-A1%2C_Going-to-the-Sun_Road%2C_construction_crew%2C_Knife_River%2C_paving_below_East_Tunnel%2C_2011.jpg" },
+          { title: "Ruta Provincial 18 / 52%", text: "Diego Salvatierra / Carpeta asfaltica / 04/05/2026", img: "https://upload.wikimedia.org/wikipedia/commons/thumb/1/10/Going-to-the-Sun_Road%2C_construction_crew_paving_around_milepost_33.jpg/900px-Going-to-the-Sun_Road%2C_construction_crew_paving_around_milepost_33.jpg" }
+        ];
+
+        const byId = (id) => document.getElementById(id);
+        const percentInput = byId("percentInput");
+        const modal = byId("modal");
+
+        function showView(name) {
+          if (!views[name]) return;
+          document.querySelectorAll(".view").forEach((view) => {
+            view.classList.toggle("active", view.id === name);
+          });
+          document.querySelectorAll(".nav button").forEach((button) => {
+            button.classList.toggle("active", button.dataset.view === name);
+          });
+          byId("pageTitle").textContent = views[name][0];
+          byId("pageSubtitle").textContent = views[name][1];
+          history.replaceState(null, "", `#${name}`);
+        }
+
+        function updateSelectedWork(name) {
+          const risk = name.includes("Ruta")
+            ? { tone: "green", label: "en rango", text: "Avance fisico y financiero alineados.", physical: 52, paid: 48 }
+            : name.includes("Red")
+              ? { tone: "yellow", label: "observacion", text: "Sin evidencia reciente. Requiere seguimiento.", physical: 38, paid: 54 }
+              : { tone: "red", label: "riesgo rojo", text: "Pagado 70%, avance fisico 41%. Desvio critico detectado.", physical: 41, paid: 70 };
+
+          byId("selectedObra").innerHTML = `
+            <span class="status ${risk.tone}-text"><span class="dot ${risk.tone}"></span>${risk.label}</span>
+            <h3>${name}</h3>
+            <p>${risk.text}</p>
+            <div class="bar-group">
+              <label>Avance fisico <b>${risk.physical}%</b></label><div class="bar"><span style="width:${risk.physical}%"></span></div>
+              <label>Ejecutado <b>${risk.paid}%</b></label><div class="bar"><span class="orange" style="width:${risk.paid}%"></span></div>
+            </div>`;
+        }
+
+        function openEvidence(index) {
+          const item = evidence[index];
+          if (!item) return;
+          byId("modalImage").style.backgroundImage = `url('${item.img}')`;
+          byId("modalTitle").textContent = item.title;
+          byId("modalText").textContent = item.text;
+          modal.classList.add("open");
+        }
+
+        byId("evidenceGrid").innerHTML = evidence.map((item, index) => `
+          <article class="card evidence-card">
+            <div class="evidence-photo" style="background-image:url('${item.img}')">
+              <button type="button" data-index="${index}">Abrir evidencia</button>
+            </div>
+            <div class="evidence-body"><strong>${item.title}</strong><p>${item.text}</p></div>
+          </article>`).join("");
+
+        document.addEventListener("click", (event) => {
+          const button = event.target.closest("button");
+          if (!button) return;
+
+          if (button.dataset.view) showView(button.dataset.view);
+          if (button.dataset.viewShortcut) showView(button.dataset.viewShortcut);
+          if (button.dataset.obra) updateSelectedWork(button.dataset.obra);
+          if (button.dataset.index) openEvidence(Number(button.dataset.index));
+
+          if (button.id === "simulateAlert") {
+            const count = byId("alertCount");
+            count.textContent = String(Number(count.textContent) + 1);
+            showView("notificaciones");
+          }
+
+          if (button.id === "closeModal") modal.classList.remove("open");
+          if (button.id === "printReport") window.print();
+          if (button.id === "photoBtn") {
+            button.textContent = "Foto lista";
+            button.classList.add("done");
+          }
+          if (button.id === "gpsBtn") {
+            button.textContent = "GPS validado";
+            button.classList.add("done");
+          }
+          if (button.id === "saveEvidence") {
+            byId("mobileResult").innerHTML = `<strong>Evidencia registrada</strong><p>${percentInput.value}% informado, foto lista, GPS dentro del radio permitido. Se genero evento de auditoria.</p>`;
+          }
+        });
+
+        percentInput.addEventListener("input", () => {
+          byId("mobilePercent").textContent = `${percentInput.value}%`;
+        });
+
+        modal.addEventListener("click", (event) => {
+          if (event.target === modal) modal.classList.remove("open");
+        });
+
+        showView(location.hash.replace("#", "") || "dashboard");
+      })();
+    </script>
+  </body>
+</html>
